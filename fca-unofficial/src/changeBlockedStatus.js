@@ -5,8 +5,8 @@ var log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function changeBlockedStatus(userID, block, callback) {
-    var resolveFunc = function () { };
-    var rejectFunc = function () { };
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -23,10 +23,12 @@ module.exports = function (defaultFuncs, api, ctx) {
 
     defaultFuncs
       .post(
-        `https://www.facebook.com/messaging/${block ? "" : "un"}block_messages/`,
+        `https://www.facebook.com/messaging/${
+          block ? "" : "un"
+        }block_messages/`,
         ctx.jar,
         {
-          fbid: userID
+          fbid: userID,
         }
       )
       .then(utils.saveCookies(ctx.jar))

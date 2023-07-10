@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function unsendMessage(userID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -25,7 +25,8 @@ module.exports = function(defaultFuncs, api, ctx) {
       uid: userID,
       unref: "bd_friends_tab",
       floc: "friends_tab",
-      "nctr[_mod]": "pagelet_timeline_app_collection_" + ctx.userID + ":2356318349:2"
+      "nctr[_mod]":
+        "pagelet_timeline_app_collection_" + ctx.userID + ":2356318349:2",
     };
 
     defaultFuncs
@@ -35,14 +36,14 @@ module.exports = function(defaultFuncs, api, ctx) {
         form
       )
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error) {
           throw resData;
         }
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("unfriend", err);
         return callback(err);
       });

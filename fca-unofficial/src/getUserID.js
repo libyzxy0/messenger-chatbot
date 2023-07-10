@@ -13,14 +13,14 @@ function formatData(data) {
     profileUrl: data.path,
     category: data.category,
     score: data.score,
-    type: data.type
+    type: data.type,
   };
 }
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getUserID(name, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -41,13 +41,13 @@ module.exports = function(defaultFuncs, api, ctx) {
       rsp: "search",
       context: "search",
       path: "/home.php",
-      request_id: utils.getGUID()
+      request_id: utils.getGUID(),
     };
 
     defaultFuncs
       .get("https://www.facebook.com/ajax/typeahead/search.php", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error) {
           throw resData;
         }
@@ -56,7 +56,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         callback(null, data.map(formatData));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("getUserID", err);
         return callback(err);
       });

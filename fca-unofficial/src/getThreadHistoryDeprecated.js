@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getThreadHistory(threadID, amount, timestamp, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -26,10 +26,10 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     var form = {
-      client: "mercury"
+      client: "mercury",
     };
 
-    api.getUserInfo(threadID, function(err, res) {
+    api.getUserInfo(threadID, function (err, res) {
       if (err) {
         return callback(err);
       }
@@ -48,7 +48,7 @@ module.exports = function(defaultFuncs, api, ctx) {
           form
         )
         .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-        .then(function(resData) {
+        .then(function (resData) {
           if (resData.error) {
             throw resData;
           } else if (!resData.payload) {
@@ -62,14 +62,14 @@ module.exports = function(defaultFuncs, api, ctx) {
           }
 
           var userIDs = {};
-          resData.payload.actions.forEach(function(v) {
+          resData.payload.actions.forEach(function (v) {
             userIDs[v.author.split(":").pop()] = "";
           });
 
-          api.getUserInfo(Object.keys(userIDs), function(err, data) {
+          api.getUserInfo(Object.keys(userIDs), function (err, data) {
             if (err) return callback(err); //callback({error: "Could not retrieve user information in getThreadHistory."});
 
-            resData.payload.actions.forEach(function(v) {
+            resData.payload.actions.forEach(function (v) {
               var sender = data[v.author.split(":").pop()];
               if (sender) v.sender_name = sender.name;
               else v.sender_name = "Facebook User";
@@ -83,7 +83,7 @@ module.exports = function(defaultFuncs, api, ctx) {
             );
           });
         })
-        .catch(function(err) {
+        .catch(function (err) {
           log.error("getThreadHistory", err);
           return callback(err);
         });

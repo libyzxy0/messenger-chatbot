@@ -3,17 +3,17 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function changeThreadEmoji(emoji, threadID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
 
     if (!callback) {
-      callback = function(err) {
+      callback = function (err) {
         if (err) {
           return rejectFunc(err);
         }
@@ -22,7 +22,7 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
     var form = {
       emoji_choice: emoji,
-      thread_or_other_fbid: threadID
+      thread_or_other_fbid: threadID,
     };
 
     defaultFuncs
@@ -32,11 +32,11 @@ module.exports = function(defaultFuncs, api, ctx) {
         form
       )
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error === 1357031) {
           throw {
             error:
-              "Trying to change emoji of a chat that doesn't exist. Have at least one message in the thread before trying to change the emoji."
+              "Trying to change emoji of a chat that doesn't exist. Have at least one message in the thread before trying to change the emoji.",
           };
         }
         if (resData.error) {
@@ -45,7 +45,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("changeThreadEmoji", err);
         return callback(err);
       });

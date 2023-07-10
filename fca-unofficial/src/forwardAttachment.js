@@ -3,16 +3,16 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function forwardAttachment(attachmentID, userOrUsers, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
     if (!callback) {
-      callback = function(err) {
+      callback = function (err) {
         if (err) {
           return rejectFunc(err);
         }
@@ -21,7 +21,7 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     var form = {
-      attachment_id: attachmentID
+      attachment_id: attachmentID,
     };
 
     if (utils.getType(userOrUsers) !== "Array") {
@@ -43,14 +43,14 @@ module.exports = function(defaultFuncs, api, ctx) {
         form
       )
       .then(utils.parseAndCheckLogin(ctx.jar, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error) {
           throw resData;
         }
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("forwardAttachment", err);
         return callback(err);
       });

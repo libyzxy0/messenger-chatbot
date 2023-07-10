@@ -3,7 +3,7 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function setTitle(newTitle, threadID, callback) {
     if (
       !callback &&
@@ -13,8 +13,8 @@ module.exports = function(defaultFuncs, api, ctx) {
       throw { error: "please pass a threadID as a second argument." };
     }
 
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -55,13 +55,17 @@ module.exports = function(defaultFuncs, api, ctx) {
       thread_fbid: threadID,
       thread_name: newTitle,
       thread_id: threadID,
-      log_message_type: "log:thread-name"
+      log_message_type: "log:thread-name",
     };
 
     defaultFuncs
-      .post("https://www.facebook.com/messaging/set_thread_name/", ctx.jar, form)
+      .post(
+        "https://www.facebook.com/messaging/set_thread_name/",
+        ctx.jar,
+        form
+      )
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error && resData.error === 1545012) {
           throw { error: "Cannot change chat title: Not member of chat." };
         }
@@ -76,7 +80,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("setTitle", err);
         return callback(err);
       });

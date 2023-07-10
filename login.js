@@ -1,7 +1,7 @@
 const login = require("./fca-unofficial");
 const fs = require("fs");
 const color = require("colors");
-const font = require('./font-mj')
+const font = require('./font-mj');
 const getAppstates = async () => {
   try {
     const files = await fs.promises.readdir("appstates");
@@ -44,7 +44,11 @@ async function Listen(cb) {
             cb(api, event);
           });
             } catch (err) {
-            console.log(err.errorSummary)
+            if(!!err.errorSummary) {
+              console.log(err.errorSummary)
+            } else {
+              console.log(err)
+            }
                console.log(color.red(`Appstate Error >>>`), color.blue(appstates[i]))
             }
         }

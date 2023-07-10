@@ -17,11 +17,11 @@ var GENDERS = {
   8: "female_plural",
   9: "male_plural",
   10: "neuter_plural",
-  11: "unknown_plural"
+  11: "unknown_plural",
 };
 
 function formatData(obj) {
-  return Object.keys(obj).map(function(key) {
+  return Object.keys(obj).map(function (key) {
     var user = obj[key];
     return {
       alternateName: user.alternateName,
@@ -34,15 +34,15 @@ function formatData(obj) {
       type: user.type,
       profileUrl: user.uri,
       vanity: user.vanity,
-      isBirthday: !!user.is_birthday
+      isBirthday: !!user.is_birthday,
     };
   });
 }
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getFriendsList(callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -65,7 +65,7 @@ module.exports = function(defaultFuncs, api, ctx) {
         { viewer: ctx.userID }
       )
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (!resData) {
           throw { error: "getFriendsList returned empty object." };
         }
@@ -74,7 +74,7 @@ module.exports = function(defaultFuncs, api, ctx) {
         }
         callback(null, formatData(resData.payload));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("getFriendsList", err);
         return callback(err);
       });

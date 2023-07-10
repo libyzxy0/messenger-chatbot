@@ -3,7 +3,7 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function removeUserFromGroup(userID, threadID, callback) {
     if (
       !callback &&
@@ -20,7 +20,7 @@ module.exports = function(defaultFuncs, api, ctx) {
         error:
           "threadID should be of type Number or String and not " +
           utils.getType(threadID) +
-          "."
+          ".",
       };
     }
     if (
@@ -31,12 +31,12 @@ module.exports = function(defaultFuncs, api, ctx) {
         error:
           "userID should be of type Number or String and not " +
           utils.getType(userID) +
-          "."
+          ".",
       };
     }
 
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -53,13 +53,13 @@ module.exports = function(defaultFuncs, api, ctx) {
 
     var form = {
       uid: userID,
-      tid: threadID
+      tid: threadID,
     };
 
     defaultFuncs
       .post("https://www.facebook.com/chat/remove_participants", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (!resData) {
           throw { error: "Remove from group failed." };
         }
@@ -69,7 +69,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("removeUserFromGroup", err);
         return callback(err);
       });

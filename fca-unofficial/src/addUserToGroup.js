@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function addUserToGroup(userID, threadID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -21,7 +21,7 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     if (!callback) {
-      callback = function(err) {
+      callback = function (err) {
         if (err) {
           return rejectFunc(err);
         }
@@ -37,7 +37,7 @@ module.exports = function(defaultFuncs, api, ctx) {
         error:
           "ThreadID should be of type Number or String and not " +
           utils.getType(threadID) +
-          "."
+          ".",
       };
     }
 
@@ -70,7 +70,7 @@ module.exports = function(defaultFuncs, api, ctx) {
       message_id: messageAndOTID,
       threading_id: utils.generateThreadingID(ctx.clientID),
       manual_retry_cnt: "0",
-      thread_fbid: threadID
+      thread_fbid: threadID,
     };
 
     for (var i = 0; i < userID.length; i++) {
@@ -82,7 +82,7 @@ module.exports = function(defaultFuncs, api, ctx) {
           error:
             "Elements of userID should be of type Number or String and not " +
             utils.getType(userID[i]) +
-            "."
+            ".",
         };
       }
 
@@ -93,7 +93,7 @@ module.exports = function(defaultFuncs, api, ctx) {
     defaultFuncs
       .post("https://www.facebook.com/messaging/send/", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (!resData) {
           throw { error: "Add to group failed." };
         }
@@ -103,11 +103,11 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         return callback();
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("addUserToGroup", err);
         return callback(err);
       });
-      
+
     return returnPromise;
   };
 };

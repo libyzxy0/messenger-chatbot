@@ -3,7 +3,7 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function createNewGroup(participantIDs, groupTitle, callback) {
     if (utils.getType(groupTitle) == "Function") {
       callback = groupTitle;
@@ -15,11 +15,13 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     if (participantIDs.length < 2) {
-      throw { error: "createNewGroup: participantIDs should have at least 2 IDs." };
+      throw {
+        error: "createNewGroup: participantIDs should have at least 2 IDs.",
+      };
     }
 
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -37,10 +39,10 @@ module.exports = function(defaultFuncs, api, ctx) {
     var pids = [];
     for (var n in participantIDs) {
       pids.push({
-        fbid: participantIDs[n]
+        fbid: participantIDs[n],
       });
     }
-    pids.push({fbid: ctx.userID});
+    pids.push({ fbid: ctx.userID });
 
     var form = {
       fb_api_caller_class: "RelayModern",
@@ -57,26 +59,26 @@ module.exports = function(defaultFuncs, api, ctx) {
           thread_settings: {
             name: groupTitle,
             joinable_mode: "PRIVATE",
-            thread_image_fbid: null
-          }
-        }
-      })
+            thread_image_fbid: null,
+          },
+        },
+      }),
     };
 
     defaultFuncs
-      .post(
-        "https://www.facebook.com/api/graphql/",
-        ctx.jar,
-        form
-      )
+      .post("https://www.facebook.com/api/graphql/", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.errors) {
           throw resData;
         }
-        return callback(null, resData.data.messenger_group_thread_create.thread.thread_key.thread_fbid);
+        return callback(
+          null,
+          resData.data.messenger_group_thread_create.thread.thread_key
+            .thread_fbid
+        );
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("createNewGroup", err);
         return callback(err);
       });

@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function resolvePhotoUrl(photoID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -23,10 +23,10 @@ module.exports = function(defaultFuncs, api, ctx) {
 
     defaultFuncs
       .get("https://www.facebook.com/mercury/attachments/photo", ctx.jar, {
-        photo_id: photoID
+        photo_id: photoID,
       })
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(resData => {
+      .then((resData) => {
         if (resData.error) {
           throw resData;
         }
@@ -35,7 +35,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
         return callback(null, photoUrl);
       })
-      .catch(err => {
+      .catch((err) => {
         log.error("resolvePhotoUrl", err);
         return callback(err);
       });

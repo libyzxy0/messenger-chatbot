@@ -19,7 +19,7 @@ function formatData(data) {
         gender: innerObj.gender,
         type: innerObj.type,
         isFriend: innerObj.is_friend,
-        isBirthday: !!innerObj.is_birthday
+        isBirthday: !!innerObj.is_birthday,
       };
     }
   }
@@ -27,10 +27,10 @@ function formatData(data) {
   return retObj;
 }
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getUserInfo(id, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -50,19 +50,19 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     var form = {};
-    id.map(function(v, i) {
+    id.map(function (v, i) {
       form["ids[" + i + "]"] = v;
     });
     defaultFuncs
       .post("https://www.facebook.com/chat/user_info/", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error) {
           throw resData;
         }
         return callback(null, formatData(resData.payload.profiles));
       })
-      .catch(function(err) {
+      .catch(function (err) {
         //log.error("getUserInfo", err);
         return callback(err);
       });

@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getThreadInfo(threadID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -22,10 +22,10 @@ module.exports = function(defaultFuncs, api, ctx) {
     }
 
     var form = {
-      client: "mercury"
+      client: "mercury",
     };
 
-    api.getUserInfo(threadID, function(err, userRes) {
+    api.getUserInfo(threadID, function (err, userRes) {
       if (err) {
         return callback(err);
       }
@@ -42,12 +42,12 @@ module.exports = function(defaultFuncs, api, ctx) {
           form
         )
         .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-        .then(function(resData) {
+        .then(function (resData) {
           if (resData.error) {
             throw resData;
           } else if (!resData.payload) {
             throw {
-              error: "Could not retrieve thread Info."
+              error: "Could not retrieve thread Info.",
             };
           }
           var threadData = resData.payload.threads[0];
@@ -55,7 +55,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
           if (threadData == null) {
             throw {
-              error: "ThreadData is null"
+              error: "ThreadData is null",
             };
           }
 
@@ -70,7 +70,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
           callback(null, utils.formatThread(threadData));
         })
-        .catch(function(err) {
+        .catch(function (err) {
           log.error("getThreadInfo", err);
           return callback(err);
         });

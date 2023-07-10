@@ -5,8 +5,8 @@ var log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function markAsDelivered(threadID, messageID, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;

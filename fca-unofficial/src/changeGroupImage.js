@@ -4,13 +4,13 @@ var utils = require("../utils");
 var log = require("npmlog");
 var bluebird = require("bluebird");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   function handleUpload(image, callback) {
     var uploads = [];
 
     var form = {
       images_only: "true",
-      "attachment[]": image
+      "attachment[]": image,
     };
 
     uploads.push(
@@ -22,7 +22,7 @@ module.exports = function(defaultFuncs, api, ctx) {
           {}
         )
         .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-        .then(function(resData) {
+        .then(function (resData) {
           if (resData.error) {
             throw resData;
           }
@@ -34,10 +34,10 @@ module.exports = function(defaultFuncs, api, ctx) {
     // resolve all promises
     bluebird
       .all(uploads)
-      .then(function(resData) {
+      .then(function (resData) {
         callback(null, resData);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("handleUpload", err);
         return callback(err);
       });
@@ -52,15 +52,15 @@ module.exports = function(defaultFuncs, api, ctx) {
       throw { error: "please pass a threadID as a second argument." };
     }
 
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
 
     if (!callback) {
-      callback = function(err) {
+      callback = function (err) {
         if (err) {
           return rejectFunc(err);
         }
@@ -95,10 +95,10 @@ module.exports = function(defaultFuncs, api, ctx) {
       timestamp: Date.now(),
       timestamp_absolute: "Today",
       timestamp_relative: utils.generateTimestampRelative(),
-      timestamp_time_passed: "0"
+      timestamp_time_passed: "0",
     };
 
-    handleUpload(image, function(err, payload) {
+    handleUpload(image, function (err, payload) {
       if (err) {
         return callback(err);
       }
@@ -107,9 +107,13 @@ module.exports = function(defaultFuncs, api, ctx) {
       form["thread_id"] = threadID;
 
       defaultFuncs
-        .post("https://www.facebook.com/messaging/set_thread_image/", ctx.jar, form)
+        .post(
+          "https://www.facebook.com/messaging/set_thread_image/",
+          ctx.jar,
+          form
+        )
         .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-        .then(function(resData) {
+        .then(function (resData) {
           // check for errors here
 
           if (resData.error) {
@@ -118,7 +122,7 @@ module.exports = function(defaultFuncs, api, ctx) {
 
           return callback();
         })
-        .catch(function(err) {
+        .catch(function (err) {
           log.error("changeGroupImage", err);
           return callback(err);
         });

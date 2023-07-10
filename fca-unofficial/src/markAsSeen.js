@@ -5,14 +5,16 @@ var log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function markAsRead(seen_timestamp, callback) {
-    if (utils.getType(seen_timestamp) == "Function" ||
-      utils.getType(seen_timestamp) == "AsyncFunction") {
+    if (
+      utils.getType(seen_timestamp) == "Function" ||
+      utils.getType(seen_timestamp) == "AsyncFunction"
+    ) {
       callback = seen_timestamp;
       seen_timestamp = Date.now();
     }
 
-    var resolveFunc = function () { };
-    var rejectFunc = function () { };
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -28,7 +30,7 @@ module.exports = function (defaultFuncs, api, ctx) {
     }
 
     var form = {
-      seen_timestamp: seen_timestamp
+      seen_timestamp: seen_timestamp,
     };
 
     defaultFuncs

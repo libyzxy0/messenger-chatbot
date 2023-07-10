@@ -3,10 +3,10 @@
 var utils = require("../utils");
 var log = require("npmlog");
 
-module.exports = function(defaultFuncs, api, ctx) {
+module.exports = function (defaultFuncs, api, ctx) {
   return function getThreadPictures(threadID, offset, limit, callback) {
-    var resolveFunc = function(){};
-    var rejectFunc = function(){};
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
@@ -24,7 +24,7 @@ module.exports = function(defaultFuncs, api, ctx) {
     var form = {
       thread_id: threadID,
       offset: offset,
-      limit: limit
+      limit: limit,
     };
 
     defaultFuncs
@@ -34,15 +34,15 @@ module.exports = function(defaultFuncs, api, ctx) {
         form
       )
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-      .then(function(resData) {
+      .then(function (resData) {
         if (resData.error) {
           throw resData;
         }
         return Promise.all(
-          resData.payload.imagesData.map(function(image) {
+          resData.payload.imagesData.map(function (image) {
             form = {
               thread_id: threadID,
-              image_id: image.fbid
+              image_id: image.fbid,
             };
             return defaultFuncs
               .post(
@@ -51,7 +51,7 @@ module.exports = function(defaultFuncs, api, ctx) {
                 form
               )
               .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
-              .then(function(resData) {
+              .then(function (resData) {
                 if (resData.error) {
                   throw resData;
                 }
@@ -67,10 +67,10 @@ module.exports = function(defaultFuncs, api, ctx) {
           })
         );
       })
-      .then(function(resData) {
+      .then(function (resData) {
         callback(null, resData);
       })
-      .catch(function(err) {
+      .catch(function (err) {
         log.error("Error in getThreadPictures", err);
         callback(err);
       });

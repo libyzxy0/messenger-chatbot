@@ -5,15 +5,18 @@ var log = require("npmlog");
 
 module.exports = function (defaultFuncs, api, ctx) {
   return function changeBio(bio, publish, callback) {
-    var resolveFunc = function () { };
-    var rejectFunc = function () { };
+    var resolveFunc = function () {};
+    var rejectFunc = function () {};
     var returnPromise = new Promise(function (resolve, reject) {
       resolveFunc = resolve;
       rejectFunc = reject;
     });
 
     if (!callback) {
-      if (utils.getType(publish) == "Function" || utils.getType(publish) == "AsyncFunction") {
+      if (
+        utils.getType(publish) == "Function" ||
+        utils.getType(publish) == "AsyncFunction"
+      ) {
         callback = publish;
       } else {
         callback = function (err) {
@@ -44,21 +47,17 @@ module.exports = function (defaultFuncs, api, ctx) {
           bio: bio,
           publish_bio_feed_story: publish,
           actor_id: ctx.userID,
-          client_mutation_id: Math.round(Math.random() * 1024).toString()
+          client_mutation_id: Math.round(Math.random() * 1024).toString(),
         },
         hasProfileTileViewID: false,
         profileTileViewID: null,
-        scale: 1
+        scale: 1,
       }),
-      av: ctx.userID
+      av: ctx.userID,
     };
 
     defaultFuncs
-      .post(
-        "https://www.facebook.com/api/graphql/",
-        ctx.jar,
-        form
-      )
+      .post("https://www.facebook.com/api/graphql/", ctx.jar, form)
       .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
       .then(function (resData) {
         if (resData.errors) {

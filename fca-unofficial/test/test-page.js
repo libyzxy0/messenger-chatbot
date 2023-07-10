@@ -1,8 +1,10 @@
-var login = require('../index.js');
-var fs = require('fs');
-var assert = require('assert');
+var login = require("../index.js");
+var fs = require("fs");
+var assert = require("assert");
 
-var conf =  JSON.parse(process.env.testconfig || fs.readFileSync('test/test-config.json', 'utf8'));
+var conf = JSON.parse(
+  process.env.testconfig || fs.readFileSync("test/test-config.json", "utf8")
+);
 var credentials = {
   email: conf.user.email,
   password: conf.user.password,
@@ -14,17 +16,17 @@ var options = {
   selfListen: true,
   listenEvents: true,
   logLevel: "silent",
-  pageID: conf.pageID
+  pageID: conf.pageID,
 };
-var getType = require('../utils').getType;
+var getType = require("../utils").getType;
 
 var userID = conf.user.id;
 
 var groupChatID;
 var groupChatName;
 
-function checkErr(done){
-  return function(err) {
+function checkErr(done) {
+  return function (err) {
     if (err) done(err);
   };
 }

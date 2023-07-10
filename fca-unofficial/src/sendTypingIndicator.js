@@ -9,7 +9,7 @@ module.exports = function (defaultFuncs, api, ctx) {
       typ: +typ,
       to: "",
       source: "mercury-chat",
-      thread: threadID
+      thread: threadID,
     };
 
     // Check if thread is a single person chat or a group chat
@@ -47,7 +47,11 @@ module.exports = function (defaultFuncs, api, ctx) {
         }
 
         defaultFuncs
-          .post("https://www.facebook.com/ajax/messaging/typ.php", ctx.jar, form)
+          .post(
+            "https://www.facebook.com/ajax/messaging/typ.php",
+            ctx.jar,
+            form
+          )
           .then(utils.parseAndCheckLogin(ctx, defaultFuncs))
           .then(function (resData) {
             if (resData.error) {
@@ -58,7 +62,10 @@ module.exports = function (defaultFuncs, api, ctx) {
           })
           .catch(function (err) {
             log.error("sendTypingIndicator", err);
-            if (utils.getType(err) == "Object" && err.error === "Not logged in.") {
+            if (
+              utils.getType(err) == "Object" &&
+              err.error === "Not logged in."
+            ) {
               ctx.loggedIn = false;
             }
             return callback(err);
@@ -78,7 +85,7 @@ module.exports = function (defaultFuncs, api, ctx) {
           "callback is not a function - ignoring."
         );
       }
-      callback = () => { };
+      callback = () => {};
     }
 
     makeTypingIndicator(true, threadID, callback, isGroup);
@@ -94,7 +101,7 @@ module.exports = function (defaultFuncs, api, ctx) {
             "callback is not a function - ignoring."
           );
         }
-        cb = () => { };
+        cb = () => {};
       }
 
       makeTypingIndicator(false, threadID, cb, isGroup);
