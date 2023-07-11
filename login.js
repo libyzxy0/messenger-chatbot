@@ -1,7 +1,8 @@
 const login = require("./fca-unofficial");
 const fs = require("fs");
 const color = require("colors");
-const font = require('./font-mj');
+const config = require('./config')
+const font = require(config.fontPath);
 const getAppstates = async () => {
   try {
     const files = await fs.promises.readdir("appstates");
@@ -27,9 +28,10 @@ async function Listen(cb) {
           let userInfo = await api.getUserInfo(cID);
           userInfo = userInfo[cID];
           console.log(
-            `${color.rainbow(`Info Login `)}${color.blue(
+            `${color.blue(
               `Logged in as >>>`
-            )} ${color.rainbow(`${userInfo.name}`)}\n${color.red(`Appstate >>>`)} ${color.rainbow(`${appstates[i]}`)}`);
+            )} ${color.rainbow(`${userInfo.name}`)}`);
+            console.log(`${color.green(`Appstate OK >>>`)} ${color.rainbow(`${appstates[i]}`)}`)
 
           if (err) return console.error("Login error");
           api.setOptions({
@@ -47,7 +49,7 @@ async function Listen(cb) {
             if(!!err.errorSummary) {
               console.log(err.errorSummary)
             } else {
-              console.log(err)
+             // console.log(err)
             }
                console.log(color.red(`Appstate Error >>>`), color.blue(appstates[i]))
             }

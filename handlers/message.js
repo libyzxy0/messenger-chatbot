@@ -19,8 +19,8 @@ module.exports = async ({ api, event, config, userInfo }) => {
           event.messageID
         );
       } else {
-        let runIt = require(`../utilities/commands/${cmd[0]}`);
-        runIt({ api, event, config, userInfo, currentUserInfo });
+        let runIt = require(`../commands/${cmd[0]}`);
+        runIt.runFunction({ api, event, config, userInfo, currentUserInfo });
       }
     } catch (err) {
       //If the file not foundor something error.
@@ -57,7 +57,7 @@ module.exports = async ({ api, event, config, userInfo }) => {
   else {
     try {
       let cmd = input.split(" ");
-      let runIt = require(`../utilities/commands/noprefix/${cmd[0]}`);
+      let runIt = require(`../commands/noprefix/${cmd[0]}`);
       runIt({ api, event, config, userInfo });
     } catch (err) {
       //console.log(err)
