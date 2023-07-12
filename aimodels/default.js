@@ -4,6 +4,7 @@ const configuration = new Configuration({
 });
 module.exports = async ({ text, userInfo, aiPrefix }, callback) => {
   try {
+    return new Promise(async (resolve, reject) => {
     const openai = new OpenAIApi(configuration);
     const completion = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
@@ -14,7 +15,8 @@ module.exports = async ({ text, userInfo, aiPrefix }, callback) => {
         },
       ],
     });
-    callback(completion.data.choices[0].message["content"]);
+    resolve(completion.data.choices[0].message["content"]);
+     }) 
   } catch (err) {
     callback(`Error: ${err}`);
   }

@@ -47,7 +47,7 @@ module.exports.runFunction = async ({ api, event, config }) => {
         quality: "best", // best, bestefficiency, 144p, 240p, 480p, 720p and so on.
         format: "mp4", // media container format
       });
-      const file = fs.createWriteStream(`utilities/commands/cache/music.mp3`);
+      const file = fs.createWriteStream(__dirname + `/../cache/music.mp3`);
 
       async function writeToStream(stream) {
         for await (const chunk of Utils.streamToIterable(stream)) {
@@ -78,7 +78,7 @@ module.exports.runFunction = async ({ api, event, config }) => {
         api.sendMessage(
           {
             body: `${info.basic_info["title"]}\n\n${response.data.result.s_lyrics}`,
-            attachment: fs.createReadStream(__dirname + "/cache/music.mp3"),
+            attachment: fs.createReadStream(__dirname + "/../cache/music.mp3"),
           },
           event.threadID,
           event.messageID

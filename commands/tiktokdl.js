@@ -31,8 +31,7 @@ module.exports.runFunction = ({ api, event }) => {
     axios
       .get(`https://tiktok-dl.libyzxy0.repl.co/?url=${url}`)
       .then((response) => {
-        let file = fs.createWriteStream(
-          "utilities/commands/cache/tiktokdl.mp4"
+        let file = fs.createWriteStream(__dirname + "/../cache/tiktokdl.mp4"
         );
         let rqs = request(response.data.url);
         rqs.pipe(file);
@@ -40,7 +39,7 @@ module.exports.runFunction = ({ api, event }) => {
           api.sendMessage(
             {
               attachment: fs.createReadStream(
-                __dirname + "/cache/tiktokdl.mp4"
+                __dirname + "/../cache/tiktokdl.mp4"
               ),
             },
             event.threadID,

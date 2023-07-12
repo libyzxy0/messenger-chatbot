@@ -1,5 +1,5 @@
 const os = require("os");
-module.export.runFunction = ({ api, event }) => {
+module.exports.runFunction = ({ api, event }) => {
   let cpu = os.loadavg()
     let ut = os.uptime()
     let sec = ut

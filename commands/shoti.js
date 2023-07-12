@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
-module.exports.runFunction = async ({ api, event }) => {
-  let bannedGC = ["9492786270746965"];
+module.exports.runFunction = async ({ api, event, globalData }) => {
+  let bannedGC = []//["9492786270746965"];
   if (!bannedGC.includes(event.threadID)) {
     if (
       !!event.body.split(" ")[1] &&
@@ -33,16 +33,16 @@ module.exports.runFunction = async ({ api, event }) => {
             writer.on("error", reject);
           });
         } catch (error) {
-          throw new Error(`Error downloading video: ${error.message}`);
+          api.sendMessage(`${err}`, event.threadID, event.messageID);
         }
       };
-      downloadVideo(data.data.data.url, "utilities/commands/cache/shoti.mp4")
+      downloadVideo(data.data.data.url, `${__dirname}/../cache/shoti.mp4`)
         .then(() => {
           api.setMessageReaction("✅", event.messageID, (err) => {}, true);
           api.sendMessage(
             {
               //body: `${data.message}`,
-              attachment: fs.createReadStream(__dirname + "/cache/shoti.mp4"),
+              attachment: fs.createReadStream(__dirname + "/../cache/shoti.mp4"),
             },
             event.threadID,
             event.messageID
@@ -52,13 +52,12 @@ module.exports.runFunction = async ({ api, event }) => {
           api.sendMessage(error, event.threadID, event.messageID);
         });
     } catch (err) {
-      console.log(err);
+      api.sendMessage(`${err}`, event.threadID, event.messageID);
     }
   } else {
     api.sendMessage(
       "This command is not allowed on this gc.",
       event.threadID,
       event.messageID
-    );
-  }
+    );                                 }
 };

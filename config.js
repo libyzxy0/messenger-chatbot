@@ -4,4 +4,5 @@ module.exports = {
   prefix: "¢",
   fontPath: "./font-mj", 
   admins: ["100081144393297"],
+  banned: []
 };
