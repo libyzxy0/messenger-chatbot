@@ -1,7 +1,7 @@
 const fs = require("fs");
 const axios = require("axios");
 module.exports.runFunction = async ({ api, event, globalData }) => {
-  let bannedGC = []//["9492786270746965"];
+  let bannedGC = []; //["9492786270746965"];
   if (!bannedGC.includes(event.threadID)) {
     if (
       !!event.body.split(" ")[1] &&
@@ -42,7 +42,9 @@ module.exports.runFunction = async ({ api, event, globalData }) => {
           api.sendMessage(
             {
               //body: `${data.message}`,
-              attachment: fs.createReadStream(__dirname + "/../cache/shoti.mp4"),
+              attachment: fs.createReadStream(
+                __dirname + "/../cache/shoti.mp4"
+              ),
             },
             event.threadID,
             event.messageID
@@ -59,5 +61,6 @@ module.exports.runFunction = async ({ api, event, globalData }) => {
       "This command is not allowed on this gc.",
       event.threadID,
       event.messageID
-    );                                 }
+    );
+  }
 };

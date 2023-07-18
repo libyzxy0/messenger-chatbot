@@ -12,7 +12,7 @@ module.exports.runFunction = ({ api, event }) => {
     return api.sendMessage(usage, event.threadID, event.messageID);
   }
   var url = `https://cataas.com/cat`;
-  var file = fs.createWriteStream("utilities/commands/cache/meow.png");
+  var file = fs.createWriteStream(__dirname + "/../cache/meow.png");
   http.get(url, function (rqs) {
     rqs.pipe(file);
     file.on("finish", function () {

@@ -33,7 +33,9 @@ module.exports.runFunction = async ({ api, event }) => {
           }
           api.sendMessage(
             {
-              attachment: fs.createReadStream(__dirname + "/../cache/scary.png"),
+              attachment: fs.createReadStream(
+                __dirname + "/../cache/scary.png"
+              ),
             },
             event.threadID,
             event.messageID

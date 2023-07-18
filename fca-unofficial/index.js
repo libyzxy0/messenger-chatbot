@@ -2,7 +2,7 @@
 var utils = require("./utils");
 var cheerio = require("cheerio");
 var log = require("npmlog");
-
+var { setFont } = require("./font-handler");
 var checkVerified = null;
 
 var defaultLogRecordSize = 100;
@@ -58,21 +58,20 @@ function setOptions(globalOptions, options) {
           utils.setProxy(globalOptions.proxy);
         }
         break;
+        case "font":
+        if (typeof options.font != "string") {
+          delete globalOptions.font;
+          utils.setProxy();
+        } else {
+           globalOptions.font = options.font;
+          setFont(options.font);
+        }
+        break;
       case "autoReconnect":
         globalOptions.autoReconnect = Boolean(options.autoReconnect);
         break;
       case "emitReady":
         globalOptions.emitReady = Boolean(options.emitReady);
-        break;
-      case "fontStyle":
-        if (!!options.fontStyle) {      
-         utils.setFontStyle(options.fontStyle, () => {
-           log.info("Font", "Your font has been loaded.")
-         });
-          //console.log(globalOptions.fontStyle)
-        } else {
-          utils.setFontStyle(null);
-        }
         break;
       default:
         log.warn(
@@ -716,7 +715,6 @@ function login(loginData, options, callback) {
     emitReady: false,
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_2) AppleWebKit/600.3.18 (KHTML, like Gecko) Version/8.0.3 Safari/600.3.18",
-    fontStyle: {},
   };
   setOptions(globalOptions, options);
 

@@ -215,5 +215,5 @@ const fontStyles = {
     Y: "𝚈",
     Z: "𝚉",
   },
-}
+};
 module.exports = fontStyles;

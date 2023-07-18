@@ -31,8 +31,7 @@ module.exports.runFunction = ({ api, event }) => {
     axios
       .get(`https://tiktok-dl.libyzxy0.repl.co/?url=${url}`)
       .then((response) => {
-        let file = fs.createWriteStream(__dirname + "/../cache/tiktokdl.mp4"
-        );
+        let file = fs.createWriteStream(__dirname + "/../cache/tiktokdl.mp4");
         let rqs = request(response.data.url);
         rqs.pipe(file);
         file.on("finish", () => {

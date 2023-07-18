@@ -1,5 +1,5 @@
 module.exports = async ({ api, event, config, userInfo, globalData }) => {
-  const { name, prefix } = config; 
+  const { name, prefix } = config;
   let input = event.body;
   let cID = api.getCurrentUserID();
   let currentUserInfo = await api.getUserInfo(cID);
@@ -18,7 +18,14 @@ module.exports = async ({ api, event, config, userInfo, globalData }) => {
         );
       } else {
         let runIt = require(`../commands/${cmd[0]}`);
-        runIt.runFunction({ api, event, config, userInfo, currentUserInfo, globalData });
+        runIt.runFunction({
+          api,
+          event,
+          config,
+          userInfo,
+          currentUserInfo,
+          globalData,
+        });
       }
     } catch (err) {
       //If the file not foundor something error.
@@ -32,6 +39,6 @@ module.exports = async ({ api, event, config, userInfo, globalData }) => {
         console.log(err);
         api.sendMessage(`Error: ${err}`, event.threadID, event.messageID);
       }
+    }
   }
-   }
 };

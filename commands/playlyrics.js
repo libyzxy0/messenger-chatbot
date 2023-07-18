@@ -40,7 +40,8 @@ module.exports.runFunction = async ({ api, event, config }) => {
       }
       const info = await yt.getBasicInfo(search.results[0].id);
       const response = await axios.get(
-        `https://sampleapi-mraikero-01.vercel.app/get/lyrics?title=${info.basic_info["title"]}`);
+        `https://sampleapi-mraikero-01.vercel.app/get/lyrics?title=${info.basic_info["title"]}`
+      );
       const url = info.streaming_data?.formats[0].decipher(yt.session.player);
       const stream = await yt.download(search.results[0].id, {
         type: "audio", // audio, video or video+audio

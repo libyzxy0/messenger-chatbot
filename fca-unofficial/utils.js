@@ -7,88 +7,20 @@ var stream = require("stream");
 var log = require("npmlog");
 var querystring = require("querystring");
 var url = require("url");
-const fs = require("fs");
-
-function setFontStyle(obj, cb) {
-  if(obj != undefined || obj != null || obj.length != 0) {
-  fs.writeFile(__dirname + "/font.json", JSON.stringify(obj), (err) => {
-      if (err) return console.log(err)  
-      cb()
-    });
-   } else {
-    let arr = {
-  a: "a",
-  b: "b",
-  c: "c",
-  d: "d",
-  e: "e",
-  f: "f",
-  g: "g",
-  h: "h",
-  i: "i",
-  j: "j",
-  k: "k",
-  l: "l",
-  m: "m",
-  n: "n",
-  o: "o",
-  p: "p",
-  q: "q",
-  r: "r",
-  s: "s",
-  t: "t",
-  u: "u",
-  v: "v",
-  w: "w",
-  x: "x",
-  y: "y",
-  z: "z",
-  A: "A",
-  B: "B",
-  C: "C",
-  D: "D",
-  E: "E",
-  F: "F",
-  G: "G",
-  H: "H",
-  I: "I",
-  J: "J",
-  K: "K",
-  L: "L",
-  M: "M",
-  N: "N",
-  O: "O",
-  P: "P",
-  Q: "Q",
-  R: "R",
-  S: "S",
-  T: "T",
-  U: "U",
-  V: "V",
-  W: "W",
-  X: "X",
-  Y: "Y",
-  Z: "Z"
-    }
-    fs.writeFile(__dirname + "/font.json", JSON.stringify(arr), (err) => {
-      if (err) return console.log(err)
-    });
-   }
-}
-function getFontStyle() {
-  let font = require('./font.json');
-  return font
-}
 
 function setProxy(url) {
   if (typeof url == undefined)
-    return request = bluebird.promisify(require("request").defaults({
+    return (request = bluebird.promisify(
+      require("request").defaults({
+        jar: true,
+      })
+    ));
+  return (request = bluebird.promisify(
+    require("request").defaults({
       jar: true,
-    }));
-  return request = bluebird.promisify(require("request").defaults({
-    jar: true,
-    proxy: url
-  }));
+      proxy: url,
+    })
+  ));
 }
 
 function getHeaders(url, options, ctx, customHeader) {
@@ -98,7 +30,7 @@ function getHeaders(url, options, ctx, customHeader) {
     Host: url.replace("https://", "").split("/")[0],
     Origin: "https://www.facebook.com",
     "User-Agent": options.userAgent,
-    Connection: "keep-alive"
+    Connection: "keep-alive",
   };
   if (customHeader) {
     Object.assign(headers, customHeader);
@@ -135,7 +67,7 @@ function get(url, jar, qs, options, ctx) {
     url: url,
     method: "GET",
     jar: jar,
-    gzip: true
+    gzip: true,
   };
 
   return request(op).then(function (res) {
@@ -151,7 +83,7 @@ function post(url, jar, form, options, ctx, customHeader) {
     method: "POST",
     form: form,
     jar: jar,
-    gzip: true
+    gzip: true,
   };
 
   return request(op).then(function (res) {
@@ -170,7 +102,7 @@ function postFormData(url, jar, form, qs, options, ctx) {
     formData: form,
     qs: qs,
     jar: jar,
-    gzip: true
+    gzip: true,
   };
 
   return request(op).then(function (res) {
@@ -249,10 +181,8 @@ var j = {
   V: "%2c%22blc%22%3a0%2c%22snd%22%3a0%2c%22ct%22%3a",
   W: "%2c%22s%22%3a0%2c%22blo%22%3a0%7d%2c%22bl%22%3a%7b%22ac%22%3a",
   X: "%2c%22ri%22%3a0%7d%2c%22state%22%3a%7b%22p%22%3a0%2c%22ut%22%3a1",
-  Y:
-    "%2c%22pt%22%3a0%2c%22vis%22%3a1%2c%22bls%22%3a0%2c%22blc%22%3a0%2c%22snd%22%3a1%2c%22ct%22%3a",
-  Z:
-    "%2c%22sb%22%3a1%2c%22t%22%3a%5b%5d%2c%22f%22%3anull%2c%22uct%22%3a0%2c%22s%22%3a0%2c%22blo%22%3a0%7d%2c%22bl%22%3a%7b%22ac%22%3a"
+  Y: "%2c%22pt%22%3a0%2c%22vis%22%3a1%2c%22bls%22%3a0%2c%22blc%22%3a0%2c%22snd%22%3a1%2c%22ct%22%3a",
+  Z: "%2c%22sb%22%3a1%2c%22t%22%3a%5b%5d%2c%22f%22%3anull%2c%22uct%22%3a0%2c%22s%22%3a0%2c%22blo%22%3a0%7d%2c%22bl%22%3a%7b%22ac%22%3a",
 };
 (function () {
   var l = [];
@@ -300,11 +230,11 @@ function generatePresence(userID) {
           uct2: time,
           tr: null,
           tw: Math.floor(Math.random() * 4294967295) + 1,
-          at: time
+          at: time,
         },
         ch: {
-          ["p_" + userID]: 0
-        }
+          ["p_" + userID]: 0,
+        },
       })
     )
   );
@@ -321,7 +251,7 @@ function generateAccessiblityCookie() {
       kb: 0,
       "kb-ts": time,
       hcm: 0,
-      "hcm-ts": time
+      "hcm-ts": time,
     })
   );
 }
@@ -330,15 +260,18 @@ function getGUID() {
   /** @type {number} */
   var sectionLength = Date.now();
   /** @type {string} */
-  var id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    /** @type {number} */
-    var r = Math.floor((sectionLength + Math.random() * 16) % 16);
-    /** @type {number} */
-    sectionLength = Math.floor(sectionLength / 16);
-    /** @type {string} */
-    var _guid = (c == "x" ? r : (r & 7) | 8).toString(16);
-    return _guid;
-  });
+  var id = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
+    /[xy]/g,
+    function (c) {
+      /** @type {number} */
+      var r = Math.floor((sectionLength + Math.random() * 16) % 16);
+      /** @type {number} */
+      sectionLength = Math.floor(sectionLength / 16);
+      /** @type {string} */
+      var _guid = (c == "x" ? r : (r & 7) | 8).toString(16);
+      return _guid;
+    }
+  );
   return id;
 }
 
@@ -362,7 +295,8 @@ function _formatAttachment(attachment1, attachment2) {
       attachment1.extensible_attachment.story_attachment &&
       attachment1.extensible_attachment.story_attachment.target &&
       attachment1.extensible_attachment.story_attachment.target.__typename &&
-      attachment1.extensible_attachment.story_attachment.target.__typename === "MessageLocation"
+      attachment1.extensible_attachment.story_attachment.target.__typename ===
+        "MessageLocation"
     ) {
       type = "MessageLocation";
     } else {
@@ -396,7 +330,7 @@ function _formatAttachment(attachment1, attachment2) {
 
         stickerID: attachment1.metadata.stickerID.toString(), // @Legacy
         spriteURI: attachment1.metadata.spriteURI, // @Legacy
-        spriteURI2x: attachment1.metadata.spriteURI2x // @Legacy
+        spriteURI2x: attachment1.metadata.spriteURI2x, // @Legacy
       };
     case "file":
       return {
@@ -410,7 +344,7 @@ function _formatAttachment(attachment1, attachment2) {
 
         name: attachment1.name, // @Legacy
         mimeType: attachment2.mime_type, // @Legacy
-        fileSize: attachment2.file_size // @Legacy
+        fileSize: attachment2.file_size, // @Legacy
       };
     case "photo":
       return {
@@ -430,7 +364,7 @@ function _formatAttachment(attachment1, attachment2) {
         url: attachment1.metadata.url, // @Legacy
         width: attachment1.metadata.dimensions.split(",")[0], // @Legacy
         height: attachment1.metadata.dimensions.split(",")[1], // @Legacy
-        name: attachment1.fileName // @Legacy
+        name: attachment1.fileName, // @Legacy
       };
     case "animated_image":
       return {
@@ -455,7 +389,8 @@ function _formatAttachment(attachment1, attachment2) {
         animatedGifUrl: attachment2.image_data.animated_gif_url, // @Legacy
         animatedGifPreviewUrl: attachment2.image_data.animated_gif_preview_url, // @Legacy
         animatedWebpUrl: attachment2.image_data.animated_webp_url, // @Legacy
-        animatedWebpPreviewUrl: attachment2.image_data.animated_webp_preview_url // @Legacy
+        animatedWebpPreviewUrl:
+          attachment2.image_data.animated_webp_preview_url, // @Legacy
       };
     case "share":
       return {
@@ -479,7 +414,7 @@ function _formatAttachment(attachment1, attachment2) {
         animatedImageSize: attachment1.share.media.animated_image_size, // @Legacy
         facebookUrl: attachment1.share.uri, // @Legacy
         target: attachment1.share.target, // @Legacy
-        styleList: attachment1.share.style_list // @Legacy
+        styleList: attachment1.share.style_list, // @Legacy
       };
     case "video":
       return {
@@ -498,7 +433,7 @@ function _formatAttachment(attachment1, attachment2) {
         duration: attachment1.metadata.duration,
         videoType: "unknown",
 
-        thumbnailUrl: attachment1.thumbnail_url // @Legacy
+        thumbnailUrl: attachment1.thumbnail_url, // @Legacy
       };
     case "error":
       return {
@@ -507,7 +442,7 @@ function _formatAttachment(attachment1, attachment2) {
         // Save error attachments because we're unsure of their format,
         // and whether there are cases they contain something useful for debugging.
         attachment1: attachment1,
-        attachment2: attachment2
+        attachment2: attachment2,
       };
     case "MessageImage":
       return {
@@ -527,7 +462,7 @@ function _formatAttachment(attachment1, attachment2) {
         url: blob.large_preview.uri, // @Legacy
         width: blob.original_dimensions.x, // @Legacy
         height: blob.original_dimensions.y, // @Legacy
-        name: blob.filename // @Legacy
+        name: blob.filename, // @Legacy
       };
     case "MessageAnimatedImage":
       return {
@@ -550,7 +485,7 @@ function _formatAttachment(attachment1, attachment2) {
         animatedGifUrl: blob.animated_image.uri, // @Legacy
         animatedGifPreviewUrl: blob.preview_image.uri, // @Legacy
         animatedWebpUrl: blob.animated_image.uri, // @Legacy
-        animatedWebpPreviewUrl: blob.preview_image.uri // @Legacy
+        animatedWebpPreviewUrl: blob.preview_image.uri, // @Legacy
       };
     case "MessageVideo":
       return {
@@ -569,7 +504,7 @@ function _formatAttachment(attachment1, attachment2) {
         duration: blob.playable_duration_in_ms,
         videoType: blob.video_type.toLowerCase(),
 
-        thumbnailUrl: blob.large_image.uri // @Legacy
+        thumbnailUrl: blob.large_image.uri, // @Legacy
       };
     case "MessageAudio":
       return {
@@ -581,7 +516,7 @@ function _formatAttachment(attachment1, attachment2) {
         duration: blob.playable_duration_in_ms,
         url: blob.playable_url,
 
-        isVoiceMail: blob.is_voicemail
+        isVoiceMail: blob.is_voicemail,
       };
     case "StickerAttachment":
       return {
@@ -605,7 +540,7 @@ function _formatAttachment(attachment1, attachment2) {
 
         stickerID: blob.id, // @Legacy
         spriteURI: blob.sprite_image, // @Legacy
-        spriteURI2x: blob.sprite_image_2x // @Legacy
+        spriteURI2x: blob.sprite_image_2x, // @Legacy
       };
     case "MessageLocation":
       var urlAttach = blob.story_attachment.url;
@@ -648,7 +583,7 @@ function _formatAttachment(attachment1, attachment2) {
 
         facebookUrl: blob.story_attachment.url, // @Legacy
         target: blob.story_attachment.target, // @Legacy
-        styleList: blob.story_attachment.style_list // @Legacy
+        styleList: blob.story_attachment.style_list, // @Legacy
       };
     case "ExtensibleAttachment":
       return {
@@ -688,14 +623,18 @@ function _formatAttachment(attachment1, attachment2) {
             : blob.story_attachment.media.playable_url,
 
         subattachments: blob.story_attachment.subattachments,
-        properties: blob.story_attachment.properties.reduce(function (obj, cur) {
+        properties: blob.story_attachment.properties.reduce(function (
+          obj,
+          cur
+        ) {
           obj[cur.key] = cur.value.text;
           return obj;
-        }, {}),
+        },
+        {}),
 
         facebookUrl: blob.story_attachment.url, // @Legacy
         target: blob.story_attachment.target, // @Legacy
-        styleList: blob.story_attachment.style_list // @Legacy
+        styleList: blob.story_attachment.style_list, // @Legacy
       };
     case "MessageFile":
       return {
@@ -709,17 +648,17 @@ function _formatAttachment(attachment1, attachment2) {
 
         name: blob.filename,
         mimeType: "",
-        fileSize: -1
+        fileSize: -1,
       };
     default:
       throw new Error(
         "unrecognized attach_file of type " +
-        type +
-        "`" +
-        JSON.stringify(attachment1, null, 4) +
-        " attachment2: " +
-        JSON.stringify(attachment2, null, 4) +
-        "`"
+          type +
+          "`" +
+          JSON.stringify(attachment1, null, 4) +
+          " attachment2: " +
+          JSON.stringify(attachment2, null, 4) +
+          "`"
       );
   }
 }
@@ -728,15 +667,15 @@ function formatAttachment(attachments, attachmentIds, attachmentMap, shareMap) {
   attachmentMap = shareMap || attachmentMap;
   return attachments
     ? attachments.map(function (val, i) {
-      if (
-        !attachmentMap ||
-        !attachmentIds ||
-        !attachmentMap[attachmentIds[i]]
-      ) {
-        return _formatAttachment(val);
-      }
-      return _formatAttachment(val, attachmentMap[attachmentIds[i]]);
-    })
+        if (
+          !attachmentMap ||
+          !attachmentIds ||
+          !attachmentMap[attachmentIds[i]]
+        ) {
+          return _formatAttachment(val);
+        }
+        return _formatAttachment(val, attachmentMap[attachmentIds[i]]);
+      })
     : [];
 }
 
@@ -747,11 +686,11 @@ function formatDeltaMessage(m) {
     m.delta.data === undefined
       ? []
       : m.delta.data.prng === undefined
-        ? []
-        : JSON.parse(m.delta.data.prng);
-  var m_id = mdata.map(u => u.i);
-  var m_offset = mdata.map(u => u.o);
-  var m_length = mdata.map(u => u.l);
+      ? []
+      : JSON.parse(m.delta.data.prng);
+  var m_id = mdata.map((u) => u.i);
+  var m_offset = mdata.map((u) => u.o);
+  var m_length = mdata.map((u) => u.l);
   var mentions = {};
   for (var i = 0; i < m_id.length; i++) {
     mentions[m_id[i]] = m.delta.body.substring(
@@ -768,10 +707,10 @@ function formatDeltaMessage(m) {
       (md.threadKey.threadFbId || md.threadKey.otherUserFbId).toString()
     ),
     messageID: md.messageId,
-    attachments: (m.delta.attachments || []).map(v => _formatAttachment(v)),
+    attachments: (m.delta.attachments || []).map((v) => _formatAttachment(v)),
     mentions: mentions,
     timestamp: md.timestamp,
-    isGroup: !!md.threadKey.threadFbId
+    isGroup: !!md.threadKey.threadFbId,
   };
 }
 
@@ -794,8 +733,8 @@ function formatMessage(m) {
       : [originalMessage.sender_name.split(" ")[0]],
     participantIDs: originalMessage.group_thread_info
       ? originalMessage.group_thread_info.participant_ids.map(function (v) {
-        return formatID(v.toString());
-      })
+          return formatID(v.toString());
+        })
       : [formatID(originalMessage.sender_fbid)],
     body: originalMessage.body || "",
     threadID: formatID(
@@ -822,7 +761,7 @@ function formatMessage(m) {
     timestampDatetime: originalMessage.timestamp_datetime,
     tags: originalMessage.tags,
     reactions: originalMessage.reactions ? originalMessage.reactions : [],
-    isUnread: originalMessage.is_unread
+    isUnread: originalMessage.is_unread,
   };
 
   if (m.type === "pages_messaging")
@@ -849,7 +788,7 @@ function formatEvent(m) {
     type: "event",
     logMessageType: logMessageType,
     logMessageData: logMessageData,
-    logMessageBody: originalMessage.log_message_body
+    logMessageBody: originalMessage.log_message_body,
   });
 }
 
@@ -917,7 +856,7 @@ function formatDeltaEvent(m) {
     logMessageType: logMessageType,
     logMessageData: logMessageData,
     logMessageBody: m.messageMetadata.adminText,
-    author: m.messageMetadata.actorFbId
+    author: m.messageMetadata.actorFbId,
   };
 }
 
@@ -932,7 +871,7 @@ function formatTyp(event) {
     // If it is, we just use that value.
     fromMobile: event.hasOwnProperty("from_mobile") ? event.from_mobile : true,
     userID: (event.realtime_viewer_fbid || event.from).toString(),
-    type: "typ"
+    type: "typ",
   };
 }
 
@@ -945,7 +884,7 @@ function formatDeltaReadReceipt(delta) {
     threadID: formatID(
       (delta.threadKey.otherUserFbId || delta.threadKey.threadFbId).toString()
     ),
-    type: "read_receipt"
+    type: "read_receipt",
   };
 }
 
@@ -954,7 +893,7 @@ function formatReadReceipt(event) {
     reader: event.reader.toString(),
     time: event.time,
     threadID: formatID((event.thread_fbid || event.reader).toString()),
-    type: "read_receipt"
+    type: "read_receipt",
   };
 }
 
@@ -967,7 +906,7 @@ function formatRead(event) {
       ).toString()
     ),
     time: event.timestamp,
-    type: "read"
+    type: "read",
   };
 }
 
@@ -1074,7 +1013,7 @@ function makeDefaults(html, userID, ctx) {
       __a: 1,
       // __af: siteData.features,
       fb_dtsg: ctx.fb_dtsg ? ctx.fb_dtsg : fb_dtsg,
-      jazoest: ctx.ttstamp ? ctx.ttstamp : ttstamp
+      jazoest: ctx.ttstamp ? ctx.ttstamp : ttstamp,
       // __spin_r: siteData.__spin_r,
       // __spin_b: siteData.__spin_b,
       // __spin_t: siteData.__spin_t,
@@ -1103,7 +1042,13 @@ function makeDefaults(html, userID, ctx) {
   }
 
   function postWithDefaults(url, jar, form, ctxx) {
-    return post(url, jar, mergeWithDefaults(form), ctx.globalOptions, ctxx || ctx);
+    return post(
+      url,
+      jar,
+      mergeWithDefaults(form),
+      ctx.globalOptions,
+      ctxx || ctx
+    );
   }
 
   function getWithDefaults(url, jar, qs, ctxx) {
@@ -1124,7 +1069,7 @@ function makeDefaults(html, userID, ctx) {
   return {
     get: getWithDefaults,
     post: postWithDefaults,
-    postFormData: postFormDataWithDefault
+    postFormData: postFormDataWithDefault,
   };
 }
 
@@ -1141,7 +1086,7 @@ function parseAndCheckLogin(ctx, defaultFuncs, retryCount) {
             error:
               "Request retry failed. Check the `res` and `statusCode` property on this error.",
             statusCode: data.statusCode,
-            res: data.body
+            res: data.body,
           };
         }
         retryCount++;
@@ -1149,12 +1094,12 @@ function parseAndCheckLogin(ctx, defaultFuncs, retryCount) {
         log.warn(
           "parseAndCheckLogin",
           "Got status code " +
-          data.statusCode +
-          " - " +
-          retryCount +
-          ". attempt to retry in " +
-          retryTime +
-          " milliseconds..."
+            data.statusCode +
+            " - " +
+            retryCount +
+            ". attempt to retry in " +
+            retryTime +
+            " milliseconds..."
         );
         var url =
           data.request.uri.protocol +
@@ -1188,8 +1133,8 @@ function parseAndCheckLogin(ctx, defaultFuncs, retryCount) {
       if (data.statusCode !== 200)
         throw new Error(
           "parseAndCheckLogin got status code: " +
-          data.statusCode +
-          ". Bailing out of trying to parse response."
+            data.statusCode +
+            ". Bailing out of trying to parse response."
         );
 
       var res = null;
@@ -1199,7 +1144,7 @@ function parseAndCheckLogin(ctx, defaultFuncs, retryCount) {
         throw {
           error: "JSON.parse error. Check the `detail` property on this error.",
           detail: e,
-          res: data.body
+          res: data.body,
         };
       }
 
@@ -1278,7 +1223,7 @@ var NUM_TO_MONTH = [
   "Sep",
   "Oct",
   "Nov",
-  "Dec"
+  "Dec",
 ];
 var NUM_TO_DAY = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function formatDate(date) {
@@ -1346,7 +1291,7 @@ function formatThread(data) {
     emoji: data.custom_like_icon,
     color: data.custom_color,
     adminIDs: data.admin_ids,
-    threadType: data.thread_type
+    threadType: data.thread_type,
   };
 }
 
@@ -1360,7 +1305,7 @@ function formatProxyPresence(presence, userID) {
     type: "presence",
     timestamp: presence.lat * 1000,
     userID: userID,
-    statuses: presence.p
+    statuses: presence.p,
   };
 }
 
@@ -1369,7 +1314,7 @@ function formatPresence(presence, userID) {
     type: "presence",
     timestamp: presence.la * 1000,
     userID: userID,
-    statuses: presence.a
+    statuses: presence.a,
   };
 }
 
@@ -1424,7 +1369,5 @@ module.exports = {
   decodeClientPayload,
   getAppState,
   getAdminTextMessageType,
-  setProxy, 
-  setFontStyle, 
-  getFontStyle
+  setProxy,
 };
