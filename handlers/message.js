@@ -1,15 +1,17 @@
+const db = require('../database/firebase');
 module.exports = async ({ api, event, config, userInfo, globalData }) => {
+  let banned = await db.readData('bot/bannedUsers');
   let input = event.body;
   let cID = api.getCurrentUserID();
   let currentUserInfo = await api.getUserInfo(cID);
   currentUserInfo = currentUserInfo[cID];
   let aiPrefix = currentUserInfo.firstName.split(" ");
-  const { name, prefix, banned } = config;
+  const { name, prefix } = config;
   //Prefix based commands
   if (input.startsWith(`${prefix}`)) {
     let cmd = input.substring(1);
     cmd = cmd.split(" ");
-    if (banned.includes(event.senderID)) {
+    if (banned.find(({ userID }) => userID === event.senderID)) {
       return api.sendMessage(
         "You're banned from using commands on this bot!",
         event.threadID,
@@ -52,6 +54,13 @@ module.exports = async ({ api, event, config, userInfo, globalData }) => {
   }
   //Personalized AI based on user name!
   else if (input.startsWith(aiPrefix[0])) {
+    if (banned.find(({ userID }) => userID === event.senderID)) {
+      return api.sendMessage(
+        "You're banned from using commands on this bot!",
+        event.threadID,
+        event.messageID
+      );
+          }
     let data = input.split(" ");
     if (data.length < 2) {
       api.sendMessage("What?", event.threadID, event.messageID);

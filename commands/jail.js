@@ -25,7 +25,7 @@ module.exports.runFunction = async ({ api, event }) => {
         url: url,
       })
       .then((image) => {
-        const filePath = __dirname + "/cache/jail.png";
+        const filePath = __dirname + "/../cache/jail.png";
         fs.writeFile(filePath, image, (err) => {
           if (err) {
             console.error("Error writing file:", err);
@@ -33,7 +33,7 @@ module.exports.runFunction = async ({ api, event }) => {
           }
           api.sendMessage(
             {
-              attachment: fs.createReadStream(__dirname + "/cache/jail.png"),
+              attachment: fs.createReadStream(__dirname + "/../cache/jail.png"),
             },
             event.threadID,
             event.messageID

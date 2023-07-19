@@ -24,7 +24,7 @@ module.exports.runFunction = async ({ api, event, config }) => {
         api.sendMessage(
           {
             body: `${response.data.result.s_title} by ${response.data.result.s_artist}\n\n${response.data.result.s_lyrics}`,
-            attachment: fs.createReadStream(__dirname + "/cache/lrc_thumb.png"),
+            attachment: fs.createReadStream(__dirname + "/../cache/lrc_thumb.png"),
           },
           event.threadID,
           event.messageID

@@ -2,12 +2,20 @@ const { Listen } = require("./login");
 const config = require("./config");
 const { keep_alive } = require("./web");
 const fs = require("fs");
+const db = require('./database/firebase');
 let msgs = {};
 let globalData = {};
+/*
+db.writeData('bot/bannedUsers', {
+  userID: "0",
+  name: "Test User"
+})
+*/
 Listen(async (api, event) => {
   let userInfo = await api.getUserInfo(event.senderID);
   userInfo = userInfo[event.senderID];
   if (event.type == "message") {
+    require("./events/innaporiate")({ api, event, config, userInfo, globalData });
     require("./handlers/message")({ api, event, config, userInfo, globalData });
     if (event.attachments.length != 0) {
       if (event.attachments[0].type == "photo") {
@@ -29,6 +37,7 @@ Listen(async (api, event) => {
      if (err) return console.log(err);
   }) 
   } else if (event.type == "message_reply") {
+    require("./events/innaporiate")({ api, event, config, userInfo, globalData });
     require("./handlers/message_reply")({
       api,
       event,

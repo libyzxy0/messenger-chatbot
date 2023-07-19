@@ -3,6 +3,22 @@ const fs = require("fs");
 const request = require("request");
 
 module.exports.runFunction = async ({ api, event }) => {
+  async function downloadImage(url) {
+  return new Promise((resolve, reject) => {
+    let file = fs.createWriteStream(__dirname + "/../cache/generate.png");
+    let rqs = request(url);
+    rqs.pipe(file);
+    file.on("finish", () => {
+      file.close();
+
+      resolve();
+    });
+    file.on("error", (err) => {
+      reject(err);
+    });
+  });
+}
+
   if (
     !!event.body.split(" ")[1] &&
     event.body.split(" ")[1].includes("-help")
@@ -45,18 +61,3 @@ module.exports.runFunction = async ({ api, event }) => {
   }
 };
 
-async function downloadImage(url) {
-  return new Promise((resolve, reject) => {
-    let file = fs.createWriteStream(__dirname + "/../cache/generate.png");
-    let rqs = request(url);
-    rqs.pipe(file);
-    file.on("finish", () => {
-      file.close();
-      api.setMessageReaction("✅", event.messageID, (err) => {}, true);
-      resolve();
-    });
-    file.on("error", (err) => {
-      reject(err);
-    });
-  });
-}

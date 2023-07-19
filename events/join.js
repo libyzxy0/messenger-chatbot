@@ -9,12 +9,13 @@ module.exports = async ({ api, event, config }) => {
   );
   userInfo = userInfo[event.logMessageData.addedParticipants[0].userFbId];
   let gcInfo = await api.getThreadInfo(event.threadID);
+  let url = 
   ameApi
     .generate("challenger", {
       url: url,
     })
     .then((image) => {
-      const filePath = __dirname + "/cache/join.png";
+      const filePath = __dirname + "/../cache/join.png";
       fs.writeFile(filePath, image, (err) => {
         if (err) {
           console.error("Error writing file:", err);
@@ -22,7 +23,7 @@ module.exports = async ({ api, event, config }) => {
         }
         api.sendMessage(
           {
-            attachment: fs.createReadStream(__dirname + "/cache/join.png"),
+            attachment: fs.createReadStream(__dirname + "/../cache/join.png"),
           },
           event.threadID,
           event.messageID
