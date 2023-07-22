@@ -3,5 +3,4 @@ module.exports = {
   creator: "libyzxy0",
   prefix: "¢",
   admins: ["100081144393297"],
-  banned: [],
 };

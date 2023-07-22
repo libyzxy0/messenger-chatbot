@@ -3,12 +3,13 @@ const http = require("https");
 module.exports = async ({ api, event, userInfo, msgs, config }) => {
   let { admins } = config;
   try {
+    /*
     if (admins.includes(event.senderID)) {
       return console.log("An admin unsent a message.");
     }
     if (api.getCurrentUserID().includes(event.senderID)) {
       return console.log("An bot unsent a message.");
-    }
+    }*/
     let unsentData = msgs[event.messageID];
     if (!unsentData) {
       return; //console.log("Unsent message error!")

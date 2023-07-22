@@ -4,12 +4,14 @@ const ameApi = new ameClient(
 );
 const fs = require("fs");
 module.exports = async ({ api, event, config }) => {
-  let userInfo = await api.getUserInfo(
-    event.logMessageData.addedParticipants[0].userFbId
-  );
+  if(event.logMessageData.addedParticipants[0].userFbId == api.getCurrentUserID()) {
+     return api.sendMessage("Hello", event.threadID, event.messageID);
+  } 
+  try {
+  let userInfo = await api.getUserInfo(event.logMessageData.addedParticipants[0].userFbId);
   userInfo = userInfo[event.logMessageData.addedParticipants[0].userFbId];
   let gcInfo = await api.getThreadInfo(event.threadID);
-  let url = 
+  let url = `https://graph.facebook.com/${event.logMessageData.addedParticipants[0].userFbId}/picture?width=720&height=720&access_token=6628568379%7Cc1e620fa708a1d5696fb991c1bde5662`
   ameApi
     .generate("challenger", {
       url: url,
@@ -23,21 +25,17 @@ module.exports = async ({ api, event, config }) => {
         }
         api.sendMessage(
           {
-            attachment: fs.createReadStream(__dirname + "/../cache/join.png"),
+            body: `Welcome ${userInfo.firstName}!`, 
+            attachment: fs.createReadStream(filePath),
           },
-          event.threadID,
-          event.messageID
+          event.threadID
         );
       });
     })
     .catch((err) => {
       throw err;
     });
-  api.sendMessage(
-    {
-      body: `Welcome ${userInfo.name} to ${gcInfo.threadName}!`,
-      attachment: fs.createReadStream(__dirname + "/cache/join.png"),
-    },
-    event.threadID
-  );
+ } catch (err) {
+    api.sendMessage(`${err}`, event.threadID, event.messageID)
+ }
 };

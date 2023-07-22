@@ -11,6 +11,7 @@ const getAppstates = async () => {
     throw error;
   }
 };
+/*
 const proxy = {
   protocol: 'https',
   host: '103.69.108.78',
@@ -31,6 +32,7 @@ const local = {
     'X-Fb-Connection-Quality': 'EXCELLENT',
   },
 };
+*/
 
 async function Listen(cb) {
   let appstates = await getAppstates();
@@ -40,8 +42,8 @@ async function Listen(cb) {
         appState: JSON.parse(
           fs.readFileSync(`./appstates/${appstates[i]}`, "utf8")
         ),
-        proxy: proxy, 
-        local: local
+        //proxy: proxy, 
+        //local: local
       },
       async (err, api) => {
         try {

@@ -2,6 +2,16 @@ const axios = require("axios");
 const request = require("request");
 const fs = require("fs");
 module.exports.runFunction = async ({ api, event, config }) => {
+  if (
+    !!event.body.split(" ")[1] &&
+    event.body.split(" ")[1].includes("-help")
+  ) {
+    const usage =
+      "Name: Lyrics\n\n" +
+      "Usage: ¢lyrics [Music Title]\n\n" +
+      "Description: Sends any lyrics that you want.";
+    return api.sendMessage(usage, event.threadID, event.messageID);
+  }
   let { prefix } = config;
   let data = event.body.split(" ");
   if (data.length < 2) {
