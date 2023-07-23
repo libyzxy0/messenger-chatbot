@@ -7,5 +7,5 @@ module.exports.runFunction = async ({ api, event, config
     info = info[admins[i]]
 		list.push(`• ${info.name}\n\n`);
     }
-    api.sendMessage(list.join(""), event.threadID, event.messageID);
-}
+    api.sendMessage(`｢Admins｣${list.join("")}`, event.threadID, event.messageID);
+\n\n

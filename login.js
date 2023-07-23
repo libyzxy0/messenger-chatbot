@@ -37,11 +37,14 @@ const local = {
 async function Listen(cb) {
   let appstates = await getAppstates();
   for (let i = 0; i < appstates.length; i++) {
+    let credentials = JSON.parse(fs.readFileSync(`./appstates/${appstates[i]}`, "utf8"));
+    //Validate appstate
+    if(typeof credentials != "object" && !credentials[0]) {
+      return console.error('Invalid appstate: ' + appstates[i])
+    }
     login(
       {
-        appState: JSON.parse(
-          fs.readFileSync(`./appstates/${appstates[i]}`, "utf8")
-        ),
+        appState: credentials,
         //proxy: proxy, 
         //local: local
       },

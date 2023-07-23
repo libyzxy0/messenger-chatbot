@@ -26,6 +26,7 @@
     "firebase-admin": "^11.10.1",
     "https-proxy-agent": "^7.0.0",
     "mqtt": "^4.3.7",
+    "node-cron": "^3.0.2",
     "nodemon": "^2.0.22",
     "npmlog": "^7.0.1",
     "openai": "^3.3.0",

@@ -13,7 +13,7 @@ module.exports.runFunction = async ({ api, event, config }) => {
   if (config.admins.includes(event.senderID)) {
     let data = event.body.split(" ");
     if(!url.stastsWith('https')) {
-      return api.sendMessage("Undefined url", event.threadID, event.messageID);
+      return api.sendMessage("invalid url", event.threadID, event.messageID);
     }
     if (data.length < 2) {
       api.sendMessage("Undefined url", event.threadID, event.messageID);
