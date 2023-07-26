@@ -15,7 +15,7 @@ module.exports.runFunction = async ({ api, event, globalData }) => {
     }
     try {
       let data = await axios.get(
-        `https://shoti-api.libyzxy0.repl.co/api/get-shoti?apikey=shoti-UnlIfhfGoixLHO_TczGFEhPMFNNWos`
+        `https://shoti-api.libyzxy0.repl.co/api/get-shoti?apikey=shoti-1h67v3d1es4hju93kn`
       );
       const downloadVideo = async (url, destinationPath) => {
         try {
@@ -33,7 +33,7 @@ module.exports.runFunction = async ({ api, event, globalData }) => {
             writer.on("error", reject);
           });
         } catch (error) {
-          api.sendMessage(`${err}`, event.threadID, event.messageID);
+api.setMessageReaction("❌", event.messageID, (err) => {}, true);          api.sendMessage(`${err}`, event.threadID, event.messageID);
         }
       };
       downloadVideo(data.data.data.url, `${__dirname}/../cache/shoti.mp4`)
@@ -54,7 +54,7 @@ module.exports.runFunction = async ({ api, event, globalData }) => {
           api.sendMessage(error, event.threadID, event.messageID);
         });
     } catch (err) {
-      api.sendMessage(`${err}`, event.threadID, event.messageID);
+api.setMessageReaction("❌", event.messageID, (err) => {}, true);      api.sendMessage(`${err}`, event.threadID, event.messageID);
     }
   } else {
     api.sendMessage(

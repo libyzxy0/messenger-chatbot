@@ -1,7 +1,7 @@
 {
   "name": "libyzxy0",
   "version": "1.0.0",
-  "description": "A Simple Project To Make Useers Easy To Use/Create Chatbots.",
+  "description": "A Simple Project To Make Users Easy To Use/Create Chatbots.",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
