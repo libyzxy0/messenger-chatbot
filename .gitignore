@@ -1,2 +1,5 @@
 node_modules
 cache
+.replit
+replit.nix
+package-lock.json
