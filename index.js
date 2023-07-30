@@ -36,10 +36,6 @@ Listen(async (api, event) => {
     } else {
       msgs[event.messageID] = event.body;
     }
-    //Write every new data
-    fs.writeFile('./cache/msgs.json', JSON.stringify(msgs), err => {
-     if (err) return console.log(err);
-  }) 
   } else if (event.type == "message_reply") {
     require("./events/innaporiate")({ api, event, config, userInfo, globalData });
     require("./handlers/message_reply")({
@@ -58,7 +54,7 @@ Listen(async (api, event) => {
         event,
         config,
         userInfo,
-        msgs: require('./cache/msgs.json'),
+        msgs,
       });
     } catch (err) {
       api.sendMessage(`Error: ${err}`, event.threadID, event.messageID);
