@@ -18,10 +18,10 @@ module.exports.runFunction = async ({ api, event }) => {
       let info = await api.getUserInfo(Object.keys(event.mentions)[i]);
       info = info[Object.keys(event.mentions)[i]]
       api.sendMessage({
-       body: "Name: " + info.name + "\nUid: " + Object.keys(event.mentions)[i]`, 
+       body: "Name: " + info.name + "\nUid: " + Object.keys(event.mentions)[i], 
        mentions: [{
          tag: info.name,
-         id: Object.keys(event.mentions)[i]`,
+         id: Object.keys(event.mentions)[i],
          fromIndex: 0
         }]
      },
